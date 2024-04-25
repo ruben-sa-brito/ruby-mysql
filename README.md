@@ -5,7 +5,7 @@
 * **init.rb:**
     Responsável por inicializar o sistema, basicamente faz os requirements necessários e instancia os objetos.
 
-* **dump.rb:**
+* **dump.sql:**
     Arquivo de dump, contém instruções sql para criação da estrutra do banco de dados, como também os dados correspondentes.
 
 * **models/cliente.rb:**
