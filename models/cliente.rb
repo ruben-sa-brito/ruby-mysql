@@ -4,4 +4,4 @@ module Models
     class Cliente
         include Orm
     end
-end        
+end       
