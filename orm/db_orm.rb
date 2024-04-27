@@ -4,6 +4,7 @@ module Orm
     
     def self.included(base)
         base.extend(MetodosDeClasse)
+        base.include(MetodosDeInstancia)
         tabela = tabela(base)
         dados = Infra::Db.new.execute("desc #{tabela}")
         atributos = dados.map{|dado| dado["Field"]}
@@ -17,6 +18,22 @@ module Orm
             end   
         end    
     end
+
+    module MetodosDeInstancia
+        def incluir
+            debugger
+            tabela = Orm::tabela(self)
+            dados = Infra::Db.new.execute("desc #{tabela};")
+            fields = dados.map { |row| row['Field'] }
+            values = self.instance_variables.map {|value| self.eval("#{value}")}
+            
+            sql = "INSERT INTO #{tabela} (#{fields[1..-1].join(", ")}) VALUES (#{('?, '*values.length)[...-2]});"
+            
+            Infra::Db.new.execute(sql, values)
+
+        end
+    end        
+
 
     module MetodosDeClasse
         def todos
@@ -41,7 +58,7 @@ module Orm
 
     private
     def self.tabela(obj)
-        tabela = obj.to_s.split("::").last.downcase + 's'
+        tabela = obj.to_s.split("::")[1][0..6].downcase + 's'
     end
               
 end           

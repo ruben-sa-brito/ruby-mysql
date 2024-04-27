@@ -22,6 +22,7 @@ module Infra
         end
 
         def execute(sql, params = [])
+            
             begin
                 statement = @client.prepare(sql)
                 result = statement.execute(*params)
